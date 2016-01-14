@@ -8,4 +8,11 @@ Here are the steps followed to integrate the PXaaS VNF with the mAPI. Rundeck an
 
 In order to deploy Rundeck follow:
 
-(URL: http://stash.i2cat.net/projects/TNOV/repos/wp5/browse/WP5/mAPI)
+http://stash.i2cat.net/projects/TNOV/repos/wp5/browse/WP5/mAPI
+
+- Install Rundeck
+- Install MySQL
+- Install Python dependencies
+- Get mAPI code
+
+Clone the wp5 repository from stash
