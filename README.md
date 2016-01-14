@@ -1,6 +1,8 @@
 # PXaaS integration with Middleware API
 ## Local test-bed
-Here are the steps followed to integrate the PXaaS VNF with the mAPI. Rundeck and Middleware API were deployed on Ubuntu 14.04 
+Here are the steps followed to integrate the PXaaS VNF with the mAPI. Rundeck and Middleware API were deployed on Ubuntu 14.04. Two different PXaaS VNF instances were tested:
+- On Virtualbox at the same machine with Rundeck and mAPI
+- On Dimokritos OpenStack
 ### Deploy Rundeck
 In order to deploy Rundeck follow:
 http://stash.i2cat.net/projects/TNOV/repos/wp5/browse/WP5/mAPI. Proceed with the following steps:
@@ -67,7 +69,7 @@ mkdir /home/vagrant/container
 
 ```
 {
-  "id":"PXaaSDimokritos",
+  "id":"PXaaS",
   "vnfd": {
     "lifecycle_event":{
       "Driver":"SSH",
@@ -95,7 +97,34 @@ dd/rn1fs8YZ6+EPGATRwn1aJPhD7Hc5o0FhE8ONanhGXAUavGdU=\n
   }
 }
 ```
+### Execution scripts on VNF
+The start and stop scripts will be executed on the VNF once the start and stop lifecycle events are executed
 
+start:
+
+```
+#!/bin/bash
+# Starts apache2, configures and runs Squid and SquidGuard, creates a cron job
+# for running the monitoring script
+sudo service apache2 start
+sudo /home/proxyvnf/dashboard/Squid-dashboard/yii squid/start
+echo "0" > /home/proxyvnf/dashboard/Squid-dashboard/monitoring/state.txt
+crontab -l > mycron
+echo "*/1 * * * * python /home/proxyvnf/dashboard/Squid-dashboard/monitoring/monitoring.py" >> mycron
+crontab mycron
+rm mycron
+```
+
+stop:
+
+```
+#!/bin/bash
+# Stops apache2, Squid and SquidGuard and kill cronjob
+
+crontab -r
+sudo service apache2 stop
+sudo /home/proxyvnf/dashboard/Squid-dashboard/yii squid/stop
+```
 ### Running Middleware API
 
 ```
