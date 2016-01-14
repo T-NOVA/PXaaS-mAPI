@@ -10,9 +10,11 @@ http://stash.i2cat.net/projects/TNOV/repos/wp5/browse/WP5/mAPI. Proceed with the
 #### Get mAPI code
 Clone the wp5 repository from stash
 #### Configuration
+
 ```
 vim wp5/WP5/mAPI/Config/mAPI.cfg
 ```
+
 ```
 [authentication]
 #authentication_method can be basic or gatekeeper
@@ -42,21 +44,27 @@ user = root
 password = <password>
 ip = localhost
 ```
+
 ### Create a pair of public/private key
 This step is needed in order for the middleware API to send remote commands to the VNF
+
 ```
 ssh-keygen -t rsa
 ```
+
 and then:
 - add the public key under ./ssh/authorized_keys on the VNF
 - add the private key on the VNFD
 
 ### Create a folder on the VNF
 In this folder the middleware API will copy the configuration files
+
 ```
 mkdir /home/vagrant/container
 ```
+
 ### Create VNFD.json
+
 ```
 {
   "id":"PXaaSDimokritos",
@@ -87,17 +95,21 @@ dd/rn1fs8YZ6+EPGATRwn1aJPhD7Hc5o0FhE8ONanhGXAUavGdU=\n
   }
 }
 ```
+
 ### Running Middleware API
+
 ```
 cd wp5/WP5/mAPI/
 sudo python northboundinterface.py
 ```
+
 ### Load VNFD and create project in Rundeck
 From a new console run:
 
 ```
 curl -X POST 0.0.0.0:1234/vnf_api/ -u admin:changeme -d @<path to VNFD>/VNFD.json -v
 ```
+
 ### Run commands
 #### Create start and stop files
 Normally those files will be created automatically (I am not sure from which component) based on the template files described in the VNFD. However, in order to test the mAPI we create them manually.
@@ -113,6 +125,7 @@ start.json
   }
 }
 ```
+
 stop.json
 
 ```
@@ -123,10 +136,13 @@ stop.json
 ```
 
 #### Run the start command
+
 ```
 curl -X POST 0.0.0.0:1234/vnf_api/PXaaS/config/ -u admin:changeme -d @start.json
 ```
+
 #### Run the stop command
+
 ```
 curl -X PUT 0.0.0.0:1234/vnf_api/PXaaS/config/ -u admin:changeme -d @stop.json
 ```
