@@ -46,13 +46,14 @@ ip = localhost
 This step is needed in order for the middleware API to send remote commands to the VNF
 ```
 ssh-keygen -t rsa
-add the public key under ./ssh/authorized_keys on the VNF
-add the private key on the VNFD
 ```
+and then:
+- add the public key under ./ssh/authorized_keys on the VNF
+- add the private key on the VNFD
+
 ### Create a folder on the VNF
 In this folder the middleware API will copy the configuration files
 ```
-# on the VNF
 mkdir /home/vagrant/container
 ```
 ### Create VNFD.json
@@ -93,6 +94,7 @@ sudo python northboundinterface.py
 ```
 ### Load VNFD and create project in Rundeck
 From a new console run:
+
 ```
 curl -X POST 0.0.0.0:1234/vnf_api/ -u admin:changeme -d @<path to VNFD>/VNFD.json -v
 ```
@@ -101,6 +103,7 @@ curl -X POST 0.0.0.0:1234/vnf_api/ -u admin:changeme -d @<path to VNFD>/VNFD.jso
 Normally those files will be created automatically (I am not sure from which component) based on the template files described in the VNFD. However, in order to test the mAPI we create them manually.
 
 start.json
+
 ```
 {
   "event":"start",
@@ -111,6 +114,7 @@ start.json
 }
 ```
 stop.json
+
 ```
 {
   "event":"stop",
