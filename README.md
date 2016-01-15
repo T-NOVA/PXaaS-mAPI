@@ -60,7 +60,7 @@ ssh-keygen -t rsa
 and then:
 
 - add the public key under ./ssh/authorized_keys on the VNF
-- add the private key on the VNFD (see below)
+- add the private key in the VNFD (see below)
 
 ### Create a folder on the VNF
 In this folder the middleware API will copy the configuration files and parameters 
@@ -89,7 +89,7 @@ sudo python northboundinterface.py
 From a new console run:
 
 ```
-curl -X POST 0.0.0.0:1234/vnf_api/ -u admin:changeme -d @<path to VNFD>/VNFD.json -v
+curl -X POST 0.0.0.0:1234/vnf_api/ -u admin:changeme -d @<path to VNFD>/VNFD_local.json -v
 ```
 
 ### Run commands
