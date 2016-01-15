@@ -1,16 +1,19 @@
 # PXaaS integration with Middleware API
 ## Local test-bed
 Here are the steps followed to integrate the PXaaS VNF with the mAPI. Rundeck and Middleware API were deployed on Ubuntu 14.04. Two different PXaaS VNF instances were tested:
+
 - On Virtualbox at the same machine with Rundeck and mAPI
 - On Dimokritos OpenStack
+
 ### Deploy Rundeck
 In order to deploy Rundeck follow:
-http://stash.i2cat.net/projects/TNOV/repos/wp5/browse/WP5/mAPI. Proceed with the following steps:
+
+[mAPI README](http://stash.i2cat.net/projects/TNOV/repos/wp5/browse/WP5/mAPI). Proceed with the following steps:
 #### Install Rundeck
 #### Install MySQL
 #### Install Python dependencies
 #### Get mAPI code
-Clone the wp5 repository from stash
+Clone the wp5 repository from [stash](http://stash.i2cat.net/projects/TNOV/repos/wp5/browse)
 #### Configuration
 
 ```
@@ -37,7 +40,7 @@ folder = /home/george/Desktop/wp5/WP5/mAPI/
 [rundeck]
 host = localhost
 port = 4440
-# get the token from Rundeck
+# get the token from Rundeck UI
 token = OdPBTMKkI8mjk63UZXwssVg4ryhS43AB
 project_folder = /var/rundeck/projects/
 TNOVA_user = george
@@ -56,10 +59,10 @@ ssh-keygen -t rsa
 
 and then:
 - add the public key under ./ssh/authorized_keys on the VNF
-- add the private key on the VNFD
+- add the private key on the VNFD (see below)
 
 ### Create a folder on the VNF
-In this folder the middleware API will copy the configuration files
+In this folder the middleware API will copy the configuration files and parameters 
 
 ```
 mkdir /home/vagrant/container
@@ -71,60 +74,36 @@ mkdir /home/vagrant/container
 {
   "id":"PXaaS",
   "vnfd": {
-    "lifecycle_event":{
-      "Driver":"SSH",
-      "Authentication":"-----BEGIN RSA PRIVATE KEY-----\n
+    "vnf_lifecycle_events":{
+      "driver":"SSH",
+      "authentication_type":"private key",
+      "authentication":"-----BEGIN RSA PRIVATE KEY-----\n
 MIIEogIBAAKCAQEAylira/1FMscFzGTLlv7XgjP/NNvbYlLecwrAotbvqizPmtPS\n
 ...
 dd/rn1fs8YZ6+EPGATRwn1aJPhD7Hc5o0FhE8ONanhGXAUavGdU=\n
 -----END RSA PRIVATE KEY-----",
-      "Authentication_Type":"private key",
-      "Authentication_Username":"vagrant",
-      "VNF_Container":"/home/vagrant/container/",
-      "events":[
-        {
-          "Event":"start",
-          "Command":"/home/vagrant/scripts/start",
-          "Template File Format":"json",
-          "Template File":"{ \"controller\":\"get_attr[vdu1,PublicIp]\", \"vdu1\":\"get_attr[vdu1,PublicIp]\"}"
+      "authentication_username":"vagrant",
+      "vnf_container":"/home/vagrant/container/",
+      "events":{
+        "start":{
+          "command":"/home/vagrant/scripts/start",
+          "template_file_format":"json",
+          "template_file":"{ \"controller\":\"get_attr[vdu1,PublicIp]\", \"vdu1\":\"get_attr[vdu1,PublicIp]\"}"
         },
-        {
-          "Event":"stop",
+        "stop":{
           "Command":"/home/vagrant/scripts/stop"
         }
-      ]
+      }
     }
   }
 }
 ```
+
+The start and stop lifecycle events are defined
 ### Execution scripts on VNF
-The start and stop scripts will be executed on the VNF once the start and stop lifecycle events are executed
+The [start](VNF_scripts/start) and [stop](VNF_scripts/stop) scripts will be executed on the VNF once the start and stop lifecycle events are executed. Make sure that the scripts are executable.
 
-start:
 
-```
-#!/bin/bash
-# Starts apache2, configures and runs Squid and SquidGuard, creates a cron job
-# for running the monitoring script
-sudo service apache2 start
-sudo /home/proxyvnf/dashboard/Squid-dashboard/yii squid/start
-echo "0" > /home/proxyvnf/dashboard/Squid-dashboard/monitoring/state.txt
-crontab -l > mycron
-echo "*/1 * * * * python /home/proxyvnf/dashboard/Squid-dashboard/monitoring/monitoring.py" >> mycron
-crontab mycron
-rm mycron
-```
-
-stop:
-
-```
-#!/bin/bash
-# Stops apache2, Squid and SquidGuard and kill cronjob
-
-crontab -r
-sudo service apache2 stop
-sudo /home/proxyvnf/dashboard/Squid-dashboard/yii squid/stop
-```
 ### Running Middleware API
 
 ```

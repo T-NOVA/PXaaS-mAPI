@@ -1,0 +1,6 @@
+#!/bin/bash
+# Stops apache2, Squid and SquidGuard and kill cronjob
+
+crontab -r
+sudo service apache2 stop
+sudo /home/proxyvnf/dashboard/Squid-dashboard/yii squid/stop

@@ -1,0 +1,10 @@
+#!/bin/bash
+# Starts apache2, configures and runs Squid and SquidGuard, creates a cron job
+# for running the monitoring script
+sudo service apache2 start
+sudo /home/proxyvnf/dashboard/Squid-dashboard/yii squid/start
+echo "0" > /home/proxyvnf/dashboard/Squid-dashboard/monitoring/state.txt
+crontab -l > mycron
+echo "*/1 * * * * python /home/proxyvnf/dashboard/Squid-dashboard/monitoring/monitoring.py" >> mycron
+crontab mycron
+rm mycron
