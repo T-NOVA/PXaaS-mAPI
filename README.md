@@ -58,6 +58,7 @@ ssh-keygen -t rsa
 ```
 
 and then:
+
 - add the public key under ./ssh/authorized_keys on the VNF
 - add the private key on the VNFD (see below)
 
@@ -69,35 +70,7 @@ mkdir /home/vagrant/container
 ```
 
 ### Create VNFD.json
-
-```
-{
-  "id":"PXaaS",
-  "vnfd": {
-    "vnf_lifecycle_events":{
-      "driver":"SSH",
-      "authentication_type":"private key",
-      "authentication":"-----BEGIN RSA PRIVATE KEY-----\n
-MIIEogIBAAKCAQEAylira/1FMscFzGTLlv7XgjP/NNvbYlLecwrAotbvqizPmtPS\n
-...
-dd/rn1fs8YZ6+EPGATRwn1aJPhD7Hc5o0FhE8ONanhGXAUavGdU=\n
------END RSA PRIVATE KEY-----",
-      "authentication_username":"vagrant",
-      "vnf_container":"/home/vagrant/container/",
-      "events":{
-        "start":{
-          "command":"/home/vagrant/scripts/start",
-          "template_file_format":"json",
-          "template_file":"{ \"controller\":\"get_attr[vdu1,PublicIp]\", \"vdu1\":\"get_attr[vdu1,PublicIp]\"}"
-        },
-        "stop":{
-          "Command":"/home/vagrant/scripts/stop"
-        }
-      }
-    }
-  }
-}
-```
+[VNFD_local.json](VNFD_local.json)
 
 The start and stop lifecycle events are defined
 ### Execution scripts on VNF
@@ -105,6 +78,7 @@ The [start](VNF_scripts/start) and [stop](VNF_scripts/stop) scripts will be exec
 
 
 ### Running Middleware API
+Make sure that the wp5/WP5/mAPI/keys directory is present otherwise create it and then:
 
 ```
 cd wp5/WP5/mAPI/

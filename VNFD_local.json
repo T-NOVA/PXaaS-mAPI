@@ -1,0 +1,22 @@
+{
+  "id":"PXaaS",
+  "vnfd": {
+    "vnf_lifecycle_events":{
+      "driver":"SSH",
+      "authentication_type":"private key",
+      "authentication":"-----BEGIN RSA PRIVATE KEY-----MIIEpQIBAAKCAQEA+rVDczA68ODQ+6lzY/ycKmdcEDo3dK3n+vi3CIstnUqSBHM2ZdheGUvilgJsUfJq/9MSreR/vZsBa2qPnIRd99qeSwZkXgQtPa/vxB83q8zKCwNeOXP8i3edkrI0rOzm3YaqyT65dxt0QksugCp6A+2RsgOx9ejIlxASUUtoFGuNfGXSM4BHWjQFNW+tS4w0FmFK6vR9udCropR3ZvwjXmirHk1M0ndYoYvKR1yHhnkN9+mlBAL5DvxCvgMsIdUQUiHmPVo6yLeVcXytOUh520SAhgJwnwplTY0nR1tMAMpodS+BRjgA03y74A5NL6k4SI1IntBcGvI+oMGHYAkTHwIDAQABAoIBACZ92gM/bm05NxzMYWkCib+A6wOazJTfdnRz5zYqmDBEGLMSNVHhrGDZ48oAST0zqPXqJD4KjQpBWDBzxeTT9dFuAUuniZVdssx7zKYh3NxFrueN9tN/WVDYZpr1PV0najKs0F/hf3wn/OuIu3T2EJG10d6w7ovA17tJvmY425v2sZFpC+BoHCZ6zaOCcEfC9lTf+oNwQzDsC4WOWVJCanj6ysYv6OfzPuouKtgzKY6gl0YP6r57HeuI1lonA5OKZkOj5x7r1xkkOkrY/RJ0GjwCM3zj/uH4+Rh5T2f4Cm2t/3QZsIo1K+wa4QDt4/Cx0kLVVyqpJwFM6I+RzOaz0hECgYEA/dnxYbwigLIDirZBB2cBxFSkFm7gd4e2eidOBXeXnPjOLzUux5oOQwPgpYxhKvMf5ZBF+/9Z/EPgV3hyRPJluTKYC6R4bQ+UC2DN+ZkA+/rvO7yPaig1ssLK5xDe+332iObguKr7eSjbzgiCdxuy0GDIoLcZa3Z6ldO6K5KmXk0CgYEA/NSCc2FveDqcWcUlfoDGh18Q7PS0po22wO9lnW0IgdUpOKrRtTVAdOLlEyp4PQhT+FpuDu4FIQ63HqPR/cOPdBNSa9n9YezAvGnZs3zVcScAJtbLUM6pRAjxK15XndzU3LQwCHgVJFu8vBTw6/GFD86+PpL72J0KXOt/11ZMJRsCgYEA+ZQ3oHHKMmHS3aRG1zJNKGxXT77/bkW+AOd37CQiqjBs9zkAnzo132mGiv0z43hZ2eg5BoOOQ1mwzg8bufHgVW8K0heIVyHD2lP47vehYhza7Q58qlCSSwj9WKTbtsOnif4E30ssJ3kmcrEnJFfVPM6LMogSs/cumvQpzAFJFNkCgYEAspkPmZ/PlVeZ0NQyGz2ugDwIgcqOvkTHP10dI+q8orJITy5juyTl5mvNNA/BJiP25S5EJqm+185ETxGcKi117aIki+lOU1liAPapAWCCik7pjYYX03pZGaVTb7ZSIEK53zot4B2rmaZwGVCVq6ZNv4/k1eEQpMCybFczVJMycNcCgYEA0kpAI6nmtc/jhyhlbXtwsTypJ64SS5+ErN2hwsiAzfCnd9qgg5ehoC31ciN65wYchgQjxKT8io0eCTST7spwdB5D/28UL83CqTfm+1u15QePoWC5Hx0zofj89ZJZuBMb9OpCjdukKM6tGZ2rUTbOrbkFdfU8AeF8eJPZUscbwno=-----END RSA PRIVATE KEY-----",
+      "authentication_username":"vagrant",
+      "vnf_container":"/home/vagrant/container/",
+      "events":{
+          "start":{
+            "command":"/home/vagrant/scripts/start",
+            "template_file_format":"json",
+            "template_file":"{ \"controller\":\"get_attr[vdu1,PublicIp]\", \"vdu1\":\"get_attr[vdu1,PublicIp]\"}"
+          },
+          "stop":{
+            "command":"/home/vagrant/scripts/stop"
+          }
+      }
+    }
+  }
+}
